@@ -1,8 +1,6 @@
 <script>
   import Card from './Card.svelte';
-
-  import { createEventDispatcher } from 'svelte';
-  const dispatch = createEventDispatcher();
+  import PollStore from './store/PollStore';
 
   export let poll;
 
@@ -13,7 +11,19 @@
 
   // Functions
 
-  const handleVote = (option, id) => dispatch('vote', { option, id });
+  const handleVote = (option, id) => {
+    PollStore.update((currPoll) => {
+      let copiedPolls = [...currPoll];
+      let upvotedPoll = copiedPolls.find((poll) => poll.id === id);
+      if (option === 'a') {
+        upvotedPoll.votesA++;
+      } else if (option === 'b') {
+        upvotedPoll.votesB++;
+      }
+
+      return copiedPolls;
+    });
+  };
 </script>
 
 <style>

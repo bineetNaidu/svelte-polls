@@ -1,6 +1,7 @@
 <script>
   import { createEventDispatcher } from 'svelte';
   import Button from './Button.svelte';
+  import PollStore from './store/PollStore';
 
   const dispatch = createEventDispatcher();
 
@@ -35,7 +36,11 @@
     // add new poll
     if (valid) {
       let poll = { ...field, id: Math.random(), votesA: 0, votesB: 0 };
-      dispatch('addPoll', poll);
+      // save poll to store
+      PollStore.update((currPolls) => {
+        return [poll, ...currPolls];
+      });
+      dispatch('addPoll');
     }
   };
 </script>

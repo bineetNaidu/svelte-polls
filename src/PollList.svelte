@@ -1,14 +1,19 @@
 <script>
+  // import { onDestroy, onMount } from 'svelte';
   import Poll from './Poll.svelte';
 
   // Store
   import PollStore from './store/PollStore.js';
 
-  export let polls = [];
+  // export let polls = [];
 
-  PollStore.subscribe((data) => {
-    polls = data;
-  });
+  // const unSub = PollStore.subscribe((data) => {
+  //   polls = data;
+  // });
+
+  // onDestroy(() => {
+  //   unSub();
+  // });
 </script>
 
 <style>
@@ -21,7 +26,7 @@
 </style>
 
 <div class="poll-list">
-  {#each polls as poll (poll.id)}
-    <Poll {poll} on:vote />
+  {#each $PollStore as poll (poll.id)}
+    <Poll {poll} />
   {/each}
 </div>
