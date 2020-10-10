@@ -3,10 +3,30 @@
   import Header from './Header.svelte';
   import Tabs from './Tabs.svelte';
   import CreatePollForm from './CreatePollForm.svelte';
+  import PollList from './PollList.svelte';
 
   // Tabs
   let items = ['Current Polls', 'Add New Poll'];
   let activeItem = 'Current Polls';
+
+  // polls
+  let polls = [
+    {
+      id: 1,
+      question: 'Python or JavaScript?',
+      answerA: 'Python',
+      answerB: 'JavaScript',
+      votesA: 9,
+      votesB: 15,
+    },
+  ];
+
+  // Functions
+  const handleAdd = (e) => {
+    const poll = e.detail;
+    polls = [poll, ...polls];
+    activeItem = 'Current Polls';
+  };
 </script>
 
 <style>
@@ -20,9 +40,9 @@
 <main>
   <Tabs {items} {activeItem} on:setTabs={(e) => (activeItem = e.detail)} />
   {#if activeItem === 'Current Polls'}
-    <p>THe polls to show</p>
+    <PollList {polls} />
   {:else if activeItem === 'Add New Poll'}
-    <CreatePollForm />
+    <CreatePollForm on:addPoll={handleAdd} />
   {/if}
 </main>
 <Footer />
